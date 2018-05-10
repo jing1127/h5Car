@@ -1,0 +1,357 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>收能量</title>
+	<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+	<script type="text/javascript" src="js/jquery-3.2.1.js"></script>
+	<style type="text/css"> 
+		*{padding:0;margin:0;}
+		html,body,.container{width:100%;height: 100%;background: #F3F4F4;overflow-x:hidden;}
+		ul{list-style: none;}
+		.box{position:relative;width:100%;height:50%;background: url(img/bg.png) no-repeat center center;background-size: cover;}
+		.box_car{width:49px;height:29px;position: relative;display: none;}
+		.car1{background: url(img/car1.png) no-repeat center center;background-size: cover;}
+		.box_car1{
+			left:100%;
+			top:10%;
+			animation: transform1 5s linear 2s infinite alternate ;
+			animation-iteration-count:1;
+			animation-fill-mode :forwards;
+		}
+		.car2{background: url(img/car2.png) no-repeat center center;background-size: cover;}
+		.box_car2{
+			left:-15%;
+			top:6%;
+			animation: transform2 5s linear 2s infinite alternate;
+			animation-iteration-count:1;
+			animation-fill-mode :forwards;
+		}
+		@keyframes transform1{
+			from{left:100%;top:10%;}
+			to{left:-15%;top:90%;}
+		}
+		@keyframes transform2{ 
+			from{left:-15%;top:6%;}
+			to{left:100%;top:82%;}
+		} 
+		.box_bottom{width:100%;position: absolute;bottom: -0.5px;}
+		.box_bottom img{width:100%;vertical-align: top;}
+		.main_list{width:100%;font-family: "黑体";color: #1b1b1b;}
+		.main_list .list_head{background:#fff;padding:6px 0px 14px 16px;border-bottom:1px solid #e6e6e6;font-size: 15px;}
+		.main_list .list_tit{padding:5px 16px;border-bottom:1px solid #e6e6e6;display: flex;font-size: 12px;}
+		.list_tit div,.list_all div{flex: 1;}
+		.list_tit .tit_many{text-align: right;}
+		.main_list ul{background: #fff;}
+		.list_all{background:#fff;margin:0px 16px;padding:12px 0px;border-bottom:1px solid #e6e6e6;display: flex;font-size: 14px;}
+		.list_all .tit_many{text-align: right;}
+		.more{padding:12px;text-align: center;font-size: 15px;display: none;}
+		.circle{width:70%;height: 65%;font-size: 14px;position:relative;top:50%;margin:-33% auto 0 auto;}
+		.circle .circle_list{width:80px;text-align: center;}
+		.circle li .circle_logo{left:50%;margin-left:-25px;width:50px;height:50px;background:url(img/circle.png) center center no-repeat;background-size:cover;position:absolute;}
+		.circle li .circle_data{margin-top:50px;color: #008148;}
+		.circle .item1{left:10px;top:50px;}
+		.circle li:nth-child(2){left:60px;top:60px;}
+		.circle li:nth-child(3){left:96px;top:20px;}
+		.none{text-align: center;height: 120px;line-height: 120px;display: none;}
+		@media screen  and (min-height: 812px){
+			.box_car1{
+				left:100%;
+				top:17%;
+				animation: transform1 5s linear 2s infinite alternate ;
+				animation-iteration-count:1;
+				animation-fill-mode :forwards;
+			}
+			.box_car2{
+				left:-15%;
+				top:13%;
+				animation: transform2 5s linear 2s infinite alternate ;
+				animation-iteration-count:1;
+				animation-fill-mode :forwards;
+			}
+			@keyframes transform1{
+				from{left:100%;top:17%;}
+				to{left:-15%;top:85%;}
+			}
+			@keyframes transform2{ 
+				from{left:-15%;top:13%;}
+				to{left:100%;top:76%;}
+			} 
+		}
+		@media screen  and (max-width: 320px){
+			.box_car1{
+				left:100%;
+				top:10%;
+				animation: transform1 5s linear 2s infinite alternate ;
+				animation-iteration-count:1;
+				animation-fill-mode :forwards;
+			}
+			.box_car2{
+				left:-15%;
+				top:6%;
+				animation: transform2 5s linear 2s infinite alternate ;
+				animation-iteration-count:1;
+				animation-fill-mode :forwards;
+			}
+			@keyframes transform1{
+				from{left:100%;top:8.5%;}
+				to{left:-15%;top:89%;}
+			}
+			@keyframes transform2{ 
+				from{left:-15%;top:7%;}
+				to{left:100%;top:81%;}
+			} 
+		}
+		[v-cloak]{
+			display: none;
+		}
+		.new_box{width:100%;height: 100%;position:absolute;top:0;bottom:0;left:0;}
+		.loading{padding:12px;text-align: center;display: none;}
+		.loading img{width:18px;}
+		.loading span{position: relative;top:-3px;left:6px;}
+		.modal {position: fixed;left: 0;right:0;top: 0;bottom: 0;z-index: 999;font-size: 15px;color: #f2f2f2;text-align: center;display: none;}
+		.modal-dialog {width: 200px;margin: 260px auto;}
+		.modal-content {background: rgba(0,0,0, .6);border:none;border-radius: 4px;padding:6px 8px;position: relative;}
+	</style> 
+</head>
+
+<body>
+	<div class="container">
+		<div class="box">
+			<div class="box_car car1" id="car1"></div>
+			<div class="box_car car2" id="car2"></div>
+			<div class="box_bottom">
+				<img src="img/top.png" />
+			</div>
+			<div class="new_box">
+					<ul class="circle">
+						</ul>
+			</div>
+		
+		</div>
+		<div class="main_list">
+			<div class="list_head">收获记录</div>
+			<div class="list_tit">
+				<div class="tit_time">时间</div>
+				<div class="tit_many">获取数量</div>
+			</div>
+			<ul>
+				<li class="list_all" v-cloak v-for="list in liLists">
+					<div class="tit_time">{{list.getDate}}</div>
+					<div class="tit_many">{{list.number}}</div>
+				</li>
+			</ul>
+			<div class="more">点击加载更多</div><div class="loading"><img src="img/loading.gif"/><span>加载中...</span></div>
+			<div class="none">还没有数据哦！</div>
+		</div>
+	</div>
+	<div class="modal">
+		    <div class="modal-dialog">
+			<div class="modal-content">
+				<div id="buy-form">
+				    <div class="tips1" id="error"></div>
+			</div>
+			</div>
+			</div>
+	</div>
+	<script src="js/vue.min.js"></script>
+	<script type="text/javascript">
+		var tt = document.querySelector('#car1');
+		tt.classList.add('box_car1');
+		tt.style.display = "block";
+		tt.addEventListener("webkitAnimationEnd", function () { //动画结束时事件 
+			tt.style.display = "none";
+			var tt1 = document.querySelector("#car2");
+			tt1.classList.add('box_car2');
+			tt1.style.display = "block";
+			tt1.addEventListener("webkitAnimationEnd", function () {
+				tt1.style.display = "none";
+			}, false);
+		}, false);
+		setInterval("run()", 14000);
+
+		function run() {
+			var tt = document.querySelector('#car1');
+			tt.classList.add('box_car1');
+			tt.style.display = "block";
+			tt.addEventListener("webkitAnimationEnd", function () { //动画结束时事件 
+				this.style.display = "none";
+				var tt1 = document.querySelector("#car2");
+				tt1.classList.add('box_car2');
+				tt1.style.display = "block";
+				tt1.addEventListener("webkitAnimationEnd", function () {
+					this.style.display = "none";
+				}, false);
+			}, false);
+		}
+		//获取地址栏
+	    	function UrlSearch()
+				{                 
+				    var name,value;
+				    var str=location.href; //取得整个地址栏
+				    var num=str.indexOf("?")
+				    str=str.substr(num+1); //取得所有参数   stringvar.substr(start [, length ]
+				    var arr=str.split("&"); //各个参数放到数组里
+				    for(var i=0;i < arr.length;i++){
+				        num=arr[i].indexOf("=");
+				        if(num>0){
+				            name=arr[i].substring(0,num);
+				            value=arr[i].substr(num+1);
+				            this[name]=value;
+				        }
+				    }
+				}
+				var Request=new UrlSearch(); //实例化
+				var merchantNo=Request.merchantNo;
+				var pageIndex=0;
+		var vm = new Vue({
+			el: ".container",
+			data: {
+				liLists: []
+			}
+		});
+		$.ajax({
+			type: "post",
+			url: "http://192.168.2.226:8080/ydlm/listTdNumber",
+			data: {
+				"merchantNo":merchantNo,			
+			},
+			success: function (data) {
+				if(data.resultCode=="0000"){
+					var arrResultData=JSON.parse(data.resultData);
+                    var length = data.resultData.length; //获取总的数据的个数	  
+				   var numLeft ="";
+				   var numTop =""; 
+                   $.each(arrResultData,function(index,value){
+						$(".circle").append('<li'+' class="circle_list">'+'<div'+' class="circle_logo">'+'</div>'+'<div'+' class="circle_data">'+arrResultData[index]+'</div>'+'</li>');
+						numTop= Math.floor(Math.random() * 100);		
+						numLeft=Math.floor(Math.random() * 224);
+						$(".circle li").eq(index).css("position","absolute").css("top", numTop + "px").css("left", numLeft + "px");					
+             		});
+				}else{
+					$(".modal").css("display","block");
+					$("#error").html(data.resultMsg);
+					setTimeout(function(){
+						$(".modal").css("display","none");
+					},1200);
+				}
+			}
+		});
+		$.ajax({
+			type: "post",
+			url: "http://192.168.2.226:8080/ydlm/listGetRecords",
+			data: {
+				"merchantNo":merchantNo,	
+				"pageIndex":pageIndex,
+				"offet":"8"
+			},
+			success: function (data) {
+				if(data.resultCode=="0000"){
+					if(JSON.parse(data.resultData).length==0){
+						$(".list_all").hide();
+						$(".more").hide();
+						$(".none").show();
+					}else{
+						vm.liLists=JSON.parse(data.resultData);
+						if(JSON.parse(data.resultData).length>=8){
+							$(".more").show();
+						}
+					}
+				}else{
+					$(".modal").css("display","block");
+					$("#error").html(data.resultMsg);
+					setTimeout(function(){
+						$(".modal").css("display","none");
+					},1200);
+				}
+			}
+		});
+$(".circle").on('click', 'li',function(){
+	var amount=$(this).find('.circle_data').html();
+	$_this=$(this);
+	$.ajax({
+		type:"post",
+		url:"http://192.168.2.226:8080/ydlm/getTdNumber",
+		data:{
+			"merchantNo":merchantNo,
+			"amount":amount
+		},
+		success:function(data){
+			if(data.resultCode=="0000"){
+				pageIndex=0;
+				$_this.fadeOut("fast");
+				$.ajax({
+					type: "post",
+					url: "http://192.168.2.226:8080/ydlm/listGetRecords",
+					data: {
+						"merchantNo":merchantNo,	
+						"pageIndex":pageIndex,
+						"offet":"8"
+					},
+					success: function(data){
+						if(data.resultCode=="0000"){
+							if(JSON.parse(data.resultData).length==0){
+								$(".list_all").hide();
+								$(".more").hide();
+								$(".none").show();
+							}else{
+								vm.liLists=JSON.parse(data.resultData);
+								if(JSON.parse(data.resultData).length>=8){
+									$(".more").show();
+								}
+							}
+						}else{
+							$(".modal").css("display","block");
+							$("#error").html(data.resultMsg);
+							setTimeout(function(){
+								$(".modal").css("display","none");
+							},1200);
+						}
+					}
+				});
+			}else{
+					$(".modal").css("display","block");
+					$("#error").html(data.resultMsg);
+					setTimeout(function(){
+						$(".modal").css("display","none");
+					},1200);
+			}
+		}
+	})
+});
+$(".more").bind('click',function(){
+	pageIndex+=8;
+	$(".more").hide();
+	$(".loading").show();
+	$.ajax({
+			type: "post", 
+			url: "http://192.168.2.226:8080/ydlm/listGetRecords",
+			data: {
+				"merchantNo":merchantNo,	
+				"pageIndex":pageIndex,
+				"offet":"8"
+			},
+			success: function (data) { 
+				$(".loading").hide();
+				$(".more").show();
+				if(data.resultCode=="0000"){
+					vm.liLists=vm.liLists.concat(JSON.parse(data.resultData));
+					if(JSON.parse(data.resultData).length<8){
+						$(".more").unbind('click');
+						$(".more").html("没有更多数据了！")
+					}
+				}else{
+					$(".modal").css("display","block");
+					$("#error").html(data.resultMsg);
+					setTimeout(function(){
+						$(".modal").css("display","none");
+					},1200);
+				}
+			}
+		});
+})
+	</script>
+</body>
+
+</html>
